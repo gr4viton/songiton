@@ -1,51 +1,9 @@
 from typing import Optional, List
 
 from fastapi import FastAPI
-
-from pydantic import BaseModel
-from enum import Enum
-
-
-class Chord(BaseModel):
-    letter: str
-
-
-class ChordPoint(BaseModel):
-    x: float
-    chord: Chord
-
-
-class TextAbscissa(BaseModel):
-    text: str
-    x_min: float = 0
-    x_max: float = 1
-    voice_name: str = None
-
-
-class VerseLine(BaseModel):
-    chord_points: List[ChordPoint]  # chord_line
-    text_abscissas: List[TextAbscissa]  # text_abscissas
-
-
-class SectionCategory(Enum):
-    verse = "verse"
-    refrain = "refrain"
-    intro = "intro"
-    bridge = "bridge"
-    outro = "outro"
-
-
-class Section(BaseModel):
-    category: SectionCategory
-    verse_number: int
-    lines: List[VerseLine]
-
-
-class Song(BaseModel):
-    name: str
-    language: str
-    author: str
-    sections: List[Section]
+from models import Song
+from responses import PutSongResponse
+from song_store import SongStore
 
 
 app = FastAPI()
@@ -56,12 +14,25 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+# @app.get("/items/{item_id}")
+# def read_item(item_id: int, q: Optional[str] = None):
+#     return {"item_id": item_id, "q": q}
 
 
-@app.get("/songs/{item_id}", response_model=List[Song])
-def get_songs(item_id: int, q: Optional[str] = None):
-    return [Song()]
+# @app.get("/song/{item_id}", response_model=List[Song])
+# def get_song(item_id: int, q: Optional[str] = None):
+#     return [Song()]
 
+
+@app.put("/song", response_model=Song)
+def put_song(song: Song):
+    store = SongStore()
+    success = store.put_song(song)
+    return song
+
+
+@app.get("/songs", response_model=List[Song])
+def get_songs(language: Optional[str] = None):
+    store = SongStore()
+    store.load_songs()
+    return store.get_songs(language=language)

@@ -23,8 +23,8 @@ class TextAbscissa(BaseModel):
 
 
 class VerseLine(BaseModel):
-    chord_points: List(ChordPoint)  # chord_line
-    text_abscissas: List(TextAbscissa)  # text_abscissas
+    chord_points: List[ChordPoint]  # chord_line
+    text_abscissas: List[TextAbscissa]  # text_abscissas
 
 
 class SectionCategory(Enum):
@@ -38,14 +38,14 @@ class SectionCategory(Enum):
 class Section(BaseModel):
     category: SectionCategory
     verse_number: int
-    lines: List(VerseLine)
+    lines: List[VerseLine]
 
 
 class Song(BaseModel):
-    sections: List(Section)
     name: str
     language: str
     author: str
+    sections: List[Section]
 
 
 app = FastAPI()
@@ -61,7 +61,7 @@ def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
 
 
-@app.get("/songs/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/songs/{item_id}", response_model=List[Song])
+def get_songs(item_id: int, q: Optional[str] = None):
+    return [Song()]
 

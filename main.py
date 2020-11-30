@@ -31,8 +31,18 @@ def put_song(song: Song):
     return song
 
 
+@app.put("/song/from-plaintext", response_model=Song)
+def put_song(text: str):
+    # song = SongFactory.from_plaintext(text)
+    song = None
+    store = SongStore()
+    success = store.put_song(song)
+    return song
+
+
 @app.get("/songs", response_model=List[Song])
 def get_songs(language: Optional[str] = None):
     store = SongStore()
     store.load_songs()
     return store.get_songs(language=language)
+

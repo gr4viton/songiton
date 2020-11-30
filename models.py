@@ -1,5 +1,5 @@
 from typing import Optional, List
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from enum import Enum
 
 
@@ -44,11 +44,15 @@ class SongFormatVersion(str, Enum):
 
 class Song(BaseModel):
     format_version: SongFormatVersion
-    id: int
-    slug: str  # snakeify the name
+    # id: int
+    # hash: str  # to calculate on creation
     name: str
-    language: str
     author: str
+    language: str
+    slug: Optional[str] = Field(
+        None,
+        title="The name of the song but with snake_case formatting."
+    )
     sections: List[Section]
 
     @property

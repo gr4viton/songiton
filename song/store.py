@@ -12,7 +12,7 @@ from models import Song
 class SongStore:
     """Songs store."""
 
-    _path = "./songs/"
+    _path = "./store/"
     store = None
 
     def __init__(self):

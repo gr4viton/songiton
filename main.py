@@ -3,7 +3,7 @@ from typing import Optional, List
 from fastapi import FastAPI
 from models import Song
 from responses import PutSongResponse
-from song_store import SongStore
+from song.store import SongStore
 
 
 app = FastAPI()

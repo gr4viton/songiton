@@ -11,11 +11,15 @@ class ChordPoint(BaseModel):
     x: float
     chord: Chord
 
+    @classmethod
+    def from_x_letter(cls, x, letter):
+        return cls(x=x, chord=Chord(letter))
+
 
 class TextAbscissa(BaseModel):
     text: str
-    x_min: float = 0
-    x_max: float = 1
+    x_min: float = 0.0
+    x_max: float = 1.0
     voice_name: str = None
 
 

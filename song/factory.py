@@ -1,4 +1,7 @@
 import re
+from typing import Optional
+from itertools import izip_longest
+
 from models import Song, ChordPoint, TextAbscissa, VerseLine
 from pydantic import BaseModel
 from enum import Enum
@@ -24,7 +27,7 @@ class LineCategory(str, Enum):
 
 class LineStats(BaseModel):
     line: str
-    category: LineCategory = None
+    category: Optional[LineCategory] = None
 
     @property
     def non_space_count(self):
@@ -47,7 +50,7 @@ class LineStats(BaseModel):
 
     @property
     def is_empty(self):
-        return bool(self.line.replace(" ", ""))
+        return not bool(self.line.replace(" ", ""))
 
 
 
@@ -81,23 +84,43 @@ class SongFactory:
         """
         txt_lines = txt.split("\n")
 
-        lines = [LineStats(line) for line in txt_lines]
+        stats = LinesStats(lines=txt_lines)
+
+class LinesStats(BaseModel):
+    lines: List[LineStats]
+        lines = [LineStats(line=line) for line in txt_lines]
         for line in lines:
             if line.space_to_char_ratio > 1:
                 line.category = LineCategory.chord
             else:
                 line.category = LineCategory.text
 
-        # check if the line categories are zigzag
-        last_line_category = None
-        for line in lines:
-            if line.is_empty:
-                continue
-            if last_line_category is None:
-                # the first line is skipped
-                if line.category is not LineCategory.chord:
-                    raise RuntimeError("Naive parser error - first line not chords")
+        # remove the empty lines from the beginning
+        old_lines = list(lines)
+        for i, line in enumerate(old_lines):
+            if not line.is_empty:
+                first_non_empty_index = i
+                break
+        lines = old_lines[first_non_empty_index:]
 
+        # first line has to be chords in this naive approach
+        if lines[0].category is not LineCategory.chord:
+            raise RuntimeError("Naive parser error - first line not chords")
+
+        for i in range(1, len(lines)):
+            if lines[i].is_empty:
+                lines[i-1].next_is_empty = True
+                if i + 1 < len(lines):
+                    lines[i+1].previous_is_empty = True
+            if line
+        # we need to have
+
+        izip_longest(*(iter(range(10)),) * 3)
+
+        # check if the line categories are zigzag
+        last_line_category = lines[0].category
+        for line in lines[1:]:
+            if line.is_empty:
                 continue
 
             if line.category is last_line_category:

@@ -2,8 +2,10 @@ from typing import Optional, List
 
 from fastapi import FastAPI
 from models import Song
-from responses import PutSongResponse
+from message_responses import PutSongResponse
+from message_requests import PutSongFromPlaintextRequest
 from song.store import SongStore
+from song.factory import SongFactory
 
 
 app = FastAPI()
@@ -31,10 +33,12 @@ def put_song(song: Song):
     return song
 
 
+
 @app.put("/song/from-plaintext", response_model=Song)
-def put_song(text: str):
+def put_song(reqo: PutSongFromPlaintextRequest):
     # song = SongFactory.from_plaintext(text)
-    song = None
+    plaintext = reqo.plaintext
+    song = SongFactory.from_plaintext(plaintext)
     store = SongStore()
     success = store.put_song(song)
     return song

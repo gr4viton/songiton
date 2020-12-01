@@ -13,7 +13,7 @@ class ChordPoint(BaseModel):
 
     @classmethod
     def from_x_letter(cls, x, letter):
-        return cls(x=x, chord=Chord(letter))
+        return cls(x=x, chord=Chord(letter=letter))
 
 
 class TextAbscissa(BaseModel):
@@ -43,7 +43,7 @@ class Section(BaseModel):
 
 
 class SongFormatVersion(str, Enum):
-    version_0_0_1 = "version_0_0_1"
+    v0_0_1 = "v0.0.1"
 
 
 class Song(BaseModel):

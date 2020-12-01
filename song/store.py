@@ -10,21 +10,31 @@ from models import Song
 
 
 class SongStore:
-    """Songs store."""
+    """Songs store.
+
+    jsong_ensure_ascii - default False
+    - on False store unicode to jsong file
+    - normally JSON should contain only ascii chars - the utf8 is encoded via /u
+    - though the jsong format can be sometimes read by humans - ergo use the utf8 in .jsong files by default
+    """
 
     _path = "./store/"
+    jsong_ensure_ascii = False
     store = None
 
     def __init__(self):
         pass
 
     def put_song(self, song) -> bool:
+        """Puts the song to db / disk - replaces if exist."""
         success = False
         fname = song.file_name
         fpath = os.path.join(self._path, fname)
+        # if os.path.exists(fpath):
+        #     raise HTTPException(status_code=409, detail="Song already exist")
 
         with open(fpath, "w") as fil:
-            txt = song.json()
+            txt = song.json(ensure_ascii=self.jsong_ensure_ascii)
             fil.write(txt)
 
         success = True

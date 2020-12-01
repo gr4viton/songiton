@@ -33,7 +33,6 @@ def put_song(song: Song):
     return song
 
 
-
 @app.put("/song/from-plaintext", response_model=Song)
 def put_song(reqo: PutSongFromPlaintextRequest):
     # song = SongFactory.from_plaintext(text)

@@ -38,5 +38,5 @@ class Invoker:
 
 if __name__ == "__main__":
     invo = Invoker()
-    fname = "to_convert/plaintext/noha_v_dumku.txt"
+    fname = "to_convert/plaintext/noha_v_dumku.lorem.txt"
     invo.invoke(fname)

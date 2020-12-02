@@ -60,6 +60,7 @@ class SongFactoryPlaintext(BaseModel):
         song = Song(
             format_version=format_version.v0_0_1,
             name="NEVIM",
+            slug="noha_v_dumku_lorem",
             author="SCRAPER",
             language="cz",
             sections=[section]

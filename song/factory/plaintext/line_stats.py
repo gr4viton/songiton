@@ -19,9 +19,13 @@ class Line(BaseModel):
         tilte="Original line from plaintext."
     )
     category: Optional[LineCategory] = None
-    verse_word: Optional[str] = Field(
+    verse_prefix_text: Optional[str] = Field(
         None,
-        title="The text prefix of the line - sometimes containing the verse number or refrain sign 'R.'."
+        title="The text prefix of the line including spaces - sometimes containing the verse number or refrain sign 'R.'."
+    )
+    verse_letter: Optional[str] = Field(
+        None,
+        title="Character / string extracted from verse_prefix_text of the leading line of the verse, assigned to all lines in the verse."
     )
     verse_prefix_spaces: Optional[int] = Field(
         0,
@@ -29,7 +33,7 @@ class Line(BaseModel):
     )
     original_prefix_spaces: Optional[int] = Field(
         0,
-        title="The count of prefix spaces of the original_line - not set by any other lines of the verse"
+        title="The count of prefix spaces of the original_line - not set by any other lines of the verse."
     )
 
     @property
@@ -74,6 +78,7 @@ class Line(BaseModel):
 
 class LineStore(BaseModel):
     lines: List[Line]
+    selected_space_count: Optional[int] = None
 
     @classmethod
     def from_plaintext(cls, plaintext):
@@ -84,14 +89,20 @@ class LineStore(BaseModel):
         return inst
 
     def analyze(self):
-        # naively categorize the lines
+        self._categorize_lines()
+        self._detect_space_prefix()
+        self._assign_verse()
+
+    def _categorize_lines(self):
+        """Naively categorize the lines."""
         for line in self.lines:
             if line.space_to_char_ratio > 1:
                 line.category = LineCategory.chord
             else:
                 line.category = LineCategory.text
 
-        # check if lines are prefixed by some number of spaces
+    def _deduce_selected_space_count(self):
+        """Check if lines are prefixed by some number of spaces."""
         occurrence_per_space_count = defaultdict(int)
         for line in self.text_lines:
             spaces_matches = re.findall(r"^ *", line.line)
@@ -109,8 +120,42 @@ class LineStore(BaseModel):
         most_frequent_space_counts = sorted(space_count_per_occurrence[max_count])
         # taking the smallest space_count with max occurances (if there are more of them)
         most_frequent_space_count = min(most_frequent_space_counts)
+        return most_frequent_space_count
+
+    def _detect_space_prefix(self):
+        """Check if lines are prefixed by some number of spaces.
+
+        Add the information about the prefix_space to the Lines.
+        """
+        if self.selected_space_count is None:
+            self.selected_space_count = self._deduce_selected_space_count()
+
         for line in self.lines:
-            line.verse_prefix_spaces = most_frequent_space_count
+            line.verse_prefix_spaces = self.selected_space_count
+
+    def _assign_verse(self):
+        """Take in account the space_count and assign verse_letter from the text_lines."""
+        if not self.selected_space_count:
+            return
+
+        for line in self.text_lines:
+            line.verse_prefix_text = line.original_line[:self.selected_space_count]
+        for line in self.text_lines:
+            verse_word = line.verse_prefix_text.replace(" ", "")
+            if not verse_word:
+                continue
+            verse_letter = verse_word.replace(".", "").replace(":", "")
+            line.verse_letter = verse_letter
+
+        current_verse_letter = "0"  # assign 0 to the lines without previous verse_letter
+        for line in self.text_lines:
+            if line.verse_letter is not None:
+                current_verse_letter = line.verse_letter
+
+            line.verse_letter = current_verse_letter
+
+            print(line.verse_letter)
+            print(line.line)
 
     @property
     def lines_without_empty(self):

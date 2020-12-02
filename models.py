@@ -38,12 +38,12 @@ class SectionCategory(str, Enum):
 
 class Section(BaseModel):
     category: SectionCategory
-    verse_number: int
+    verse_code: str
     lines: List[VerseLine]
 
 
 class SongFormatVersion(str, Enum):
-    v0_0_1 = "v0.0.1"
+    v0_0_1 = "v0.1.0"
 
 
 class Song(BaseModel):

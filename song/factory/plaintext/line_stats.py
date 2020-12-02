@@ -23,7 +23,7 @@ class Line(BaseModel):
         None,
         title="The text prefix of the line including spaces - sometimes containing the verse number or refrain sign 'R.'."
     )
-    verse_letter: Optional[str] = Field(
+    verse_code: Optional[str] = Field(
         None,
         title="Character / string extracted from verse_prefix_text of the leading line of the verse, assigned to all lines in the verse."
     )
@@ -134,7 +134,7 @@ class LineStore(BaseModel):
             line.verse_prefix_spaces = self.selected_space_count
 
     def _assign_verse(self):
-        """Take in account the space_count and assign verse_letter from the text_lines."""
+        """Take in account the space_count and assign verse_code from the text_lines."""
         if not self.selected_space_count:
             return
 
@@ -144,17 +144,17 @@ class LineStore(BaseModel):
             verse_word = line.verse_prefix_text.replace(" ", "")
             if not verse_word:
                 continue
-            verse_letter = verse_word.replace(".", "").replace(":", "")
-            line.verse_letter = verse_letter
+            verse_code = verse_word.replace(".", "").replace(":", "")
+            line.verse_code = verse_code
 
-        current_verse_letter = "0"  # assign 0 to the lines without previous verse_letter
+        current_verse_code = "0"  # assign 0 to the lines without previous verse_code
         for line in self.text_lines:
-            if line.verse_letter is not None:
-                current_verse_letter = line.verse_letter
+            if line.verse_code is not None:
+                current_verse_code = line.verse_code
 
-            line.verse_letter = current_verse_letter
+            line.verse_code = current_verse_code
 
-            print(line.verse_letter)
+            print(line.verse_code)
             print(line.line)
 
     @property

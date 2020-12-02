@@ -1,5 +1,5 @@
 {
-  "format_version": "v0.0.1",
+  "format_version": "v0.1.0",
   "name": "noha_v_dumku.lorem",
   "author": "SCRAPER",
   "language": "cz",
@@ -7,7 +7,7 @@
   "sections": [
     {
       "category": "verse",
-      "verse_number": 1,
+      "verse_code": "1",
       "lines": [
         {
           "chord_points": [

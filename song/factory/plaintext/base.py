@@ -52,7 +52,7 @@ class SongFactoryPlaintext(BaseModel):
         category_cls = Section.__fields__["category"].type_  # lol
         section = Section(
             category=category_cls.verse,
-            verse_number=1,
+            verse_code="1",
             lines=verse_lines,
         )
 

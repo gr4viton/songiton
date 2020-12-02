@@ -43,7 +43,7 @@ class Section(BaseModel):
 
 
 class SongFormatVersion(str, Enum):
-    v0_0_1 = "v0.1.0"
+    v0_1_0 = "v0.1.0"
 
 
 class Song(BaseModel):

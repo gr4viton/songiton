@@ -170,7 +170,13 @@
               "voice_name": null
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "category": "verse",
+      "verse_code": "2",
+      "lines": [
         {
           "chord_points": [
             {
@@ -332,7 +338,13 @@
               "voice_name": null
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "category": "verse",
+      "verse_code": "3",
+      "lines": [
         {
           "chord_points": [
             {
@@ -489,168 +501,6 @@
           "text_abscissas": [
             {
               "text": "y te minus eorum nisi.",
-              "x_min": 0.0,
-              "x_max": 1.0,
-              "voice_name": null
-            }
-          ]
-        },
-        {
-          "chord_points": [
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "G"
-              }
-            },
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "E"
-              }
-            }
-          ],
-          "text_abscissas": [
-            {
-              "text": "W lius se error nunc spirans,",
-              "x_min": 0.0,
-              "x_max": 1.0,
-              "voice_name": null
-            }
-          ]
-        },
-        {
-          "chord_points": [
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "Am"
-              }
-            },
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "F"
-              }
-            }
-          ],
-          "text_abscissas": [
-            {
-              "text": "qui ex fames, rem massa,",
-              "x_min": 0.0,
-              "x_max": 1.0,
-              "voice_name": null
-            }
-          ]
-        },
-        {
-          "chord_points": [
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "G"
-              }
-            },
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "E7"
-              }
-            },
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "E"
-              }
-            }
-          ],
-          "text_abscissas": [
-            {
-              "text": "Gennere nam, Quaedam dui, ut te quos nam.",
-              "x_min": 0.0,
-              "x_max": 1.0,
-              "voice_name": null
-            }
-          ]
-        },
-        {
-          "chord_points": [
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "E"
-              }
-            }
-          ],
-          "text_abscissas": [
-            {
-              "text": "Ipsum mi, exemplo, ex in dui ad vel,",
-              "x_min": 0.0,
-              "x_max": 1.0,
-              "voice_name": null
-            }
-          ]
-        },
-        {
-          "chord_points": [
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "Em"
-              }
-            },
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "A"
-              }
-            }
-          ],
-          "text_abscissas": [
-            {
-              "text": "mus ab hac vel neque deesse potiorue",
-              "x_min": 0.0,
-              "x_max": 1.0,
-              "voice_name": null
-            }
-          ]
-        },
-        {
-          "chord_points": [
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "F"
-              }
-            }
-          ],
-          "text_abscissas": [
-            {
-              "text": "p eos te eaque vel nibh aenean",
-              "x_min": 0.0,
-              "x_max": 1.0,
-              "voice_name": null
-            }
-          ]
-        },
-        {
-          "chord_points": [
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "Em"
-              }
-            },
-            {
-              "x": 0.0,
-              "chord": {
-                "letter": "F"
-              }
-            }
-          ],
-          "text_abscissas": [
-            {
-              "text": "a se unde scandalum.",
               "x_min": 0.0,
               "x_max": 1.0,
               "voice_name": null

@@ -109,8 +109,8 @@ class LineStore(BaseModel):
         most_frequent_space_counts = sorted(space_count_per_occurrence[max_count])
         # taking the smallest space_count with max occurances (if there are more of them)
         most_frequent_space_count = min(most_frequent_space_counts)
-        # for line in self.lines:
-        #     line.verse_prefix_spaces = most_frequent_space_count
+        for line in self.lines:
+            line.verse_prefix_spaces = most_frequent_space_count
 
     @property
     def lines_without_empty(self):

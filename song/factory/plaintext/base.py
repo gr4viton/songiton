@@ -59,8 +59,8 @@ class SongFactoryPlaintext(BaseModel):
         format_version = Song.__fields__["format_version"].type_
         song = Song(
             format_version=format_version.v0_0_1,
-            name="NEVIM",
-            slug="noha_v_dumku_lorem",
+            name="noha_v_dumku.lorem",
+            slug="noha_v_dumku.lorem",
             author="SCRAPER",
             language="cz",
             sections=[section]

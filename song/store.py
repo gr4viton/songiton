@@ -20,6 +20,7 @@ class SongStore:
 
     _path = "./store/"
     jsong_ensure_ascii = False
+    jsong_indent = 2
     store = None
 
     def __init__(self):
@@ -34,7 +35,7 @@ class SongStore:
         #     raise HTTPException(status_code=409, detail="Song already exist")
 
         with open(fpath, "w") as fil:
-            txt = song.json(ensure_ascii=self.jsong_ensure_ascii)
+            txt = song.json(ensure_ascii=self.jsong_ensure_ascii, indent=self.jsong_indent)
             fil.write(txt)
 
         success = True

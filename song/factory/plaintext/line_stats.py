@@ -38,7 +38,7 @@ class Line(BaseModel):
 
         If prefix spaces are detected, they are trimmed.
         """
-        if not self.category
+        if not self.category:
             # if category not assigned - we are not sure if to trim
             return self.original_line
         if self.category is LineCategory.chord:
@@ -92,18 +92,25 @@ class LineStore(BaseModel):
                 line.category = LineCategory.text
 
         # check if lines are prefixed by some number of spaces
-        space_count_occurence = defaultdict(int)
+        occurrence_per_space_count = defaultdict(int)
         for line in self.text_lines:
             spaces_matches = re.findall(r"^ *", line.line)
             space_count = len(spaces_matches[0])
             line.original_prefix_spaces = space_count
-            space_count_occurence[space_count] += 1
+            occurrence_per_space_count[space_count] += 1
 
-        for space_count, occurence in space_count_occurence.items():
-            print(f"{space_count} spaces were in the text_lines {occurence} times")
+        space_count_per_occurrence = defaultdict(list)
+        for space_count, occurrence in occurrence_per_space_count.items():
+            space_count_per_occurrence[occurrence].append(space_count)
 
-        most_frequent_space_count = max(space_count_occurence.items(), key=operator.itemgetter(1))
-        for line in self.lines
+            print(f"{space_count} spaces were in the text_lines {occurrence} times")
+
+        max_count = max(space_count_per_occurrence.keys())
+        most_frequent_space_counts = sorted(space_count_per_occurrence[max_count])
+        # taking the smallest space_count with max occurances (if there are more of them)
+        most_frequent_space_count = min(most_frequent_space_counts)
+        # for line in self.lines:
+        #     line.verse_prefix_spaces = most_frequent_space_count
 
     @property
     def lines_without_empty(self):

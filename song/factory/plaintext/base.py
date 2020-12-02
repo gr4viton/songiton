@@ -45,37 +45,27 @@ class SongFactoryPlaintext(BaseModel):
 
         category_cls = Section.__fields__["category"].type_  # lol
 
+        # generate verse_lines
         sections = []
-        verse_lines = []
+        verse_lines = None
         verse_code = None
         for line_pair in store.get_line_pairs():
             chord_line, text_line = line_pair
+            verse_line = VerseLineFactory.from_plaintext(chord_line.line, text_line.line)
+            if text_line.is_leading_line:
+                if verse_lines is not None:
+                    # verse_lines should be saved to section
+                    section = Section(
+                        category=category_cls.verse,  # always verse for now
+                        verse_code=verse_code,
+                        lines=verse_lines,
+                    )
+                    sections.append(section)
 
-            save_previous_verse = text_line.verse_code != verse_code and verse_code is not None
-            if save_previous_verse:
-                # first line_pair of a new verse (section)
-                sections.append(Section(
-                    category=category_cls.verse  # always verse for now
-                    verse_code=verse_code,
-                    lines=list(verse_lines),
-                ))
                 verse_lines = []
 
             verse_code = text_line.verse_code
-
-            verse_line = VerseLineFactory.from_plaintext(chord_line.line, text_line.line)
             verse_lines.append(verse_line)
-        else:
-            # done if we get to the end of the iterable
-            # save the last verse as section now
-            sections.append(Section(
-                category=category_cls.verse  # always verse for now
-                verse_code=verse_code,
-                lines=list(verse_lines),
-            ))
-
-        for verse_line in verse_lines:
-            verse_code = text_line.verse_code
 
         format_version = Song.__fields__["format_version"].type_
         song = Song(

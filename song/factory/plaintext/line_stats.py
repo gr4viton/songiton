@@ -35,6 +35,10 @@ class Line(BaseModel):
         0,
         title="The count of prefix spaces of the original_line - not set by any other lines of the verse."
     )
+    is_leading_line: Optional[bool] = Field(
+        None,
+        title="The first text_line of each verse are assigned True."
+    )
 
     @property
     def line(self):
@@ -143,9 +147,14 @@ class LineStore(BaseModel):
         for line in self.text_lines:
             verse_word = line.verse_prefix_text.replace(" ", "")
             if not verse_word:
+                # not first text_line in the verse
                 continue
             verse_code = verse_word.replace(".", "").replace(":", "")
             line.verse_code = verse_code
+            line.is_leading_line = True
+
+        # the first line should be always leading line
+        self.text_lines[0].is_leading_line = True
 
         current_verse_code = "0"  # assign 0 to the lines without previous verse_code
         for line in self.text_lines:
@@ -154,8 +163,8 @@ class LineStore(BaseModel):
 
             line.verse_code = current_verse_code
 
-            print(line.verse_code)
-            print(line.line)
+            is_lead = "is_lead" if line.is_leading_line else ""
+            print(f"{line.verse_code} | {line.line} | {is_lead}")
 
     @property
     def lines_without_empty(self):

@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from song.factory.plaintext.line_stats import LineStore
 from song.factory.plaintext.verse_line import VerseLineFactory
-from models import Song, Section
+from song.factory.plaintext.section_category import SectionCategoryFactory
+from models import Song, Section, SectionCategory, SongFormatVersion
 
 
 class SongFactoryPlaintext(BaseModel):
@@ -40,11 +41,6 @@ class SongFactoryPlaintext(BaseModel):
 
         print("line categories are switching per each line, yay")
 
-        print("not detecting multiple verses for now")
-        # the indentation should be removed before the following step!
-
-        category_cls = Section.__fields__["category"].type_  # lol
-
         # generate verse_lines
         sections = []
         verse_lines = []
@@ -67,7 +63,7 @@ class SongFactoryPlaintext(BaseModel):
 
             if save_section:
                 section = Section(
-                    category=category_cls.verse,  # always verse for now
+                    category=SectionCategoryFactory.from_verse_code(verse_code),
                     verse_code=verse_code,
                     lines=verse_lines,
                 )
@@ -77,9 +73,8 @@ class SongFactoryPlaintext(BaseModel):
                 verse_lines = []
 
 
-        format_version = Song.__fields__["format_version"].type_
         song = Song(
-            format_version=format_version.v0_1_0,
+            format_version=SongFormatVersion.v0_1_0,
             name="noha_v_dumku.lorem",
             slug="noha_v_dumku.lorem",
             author="SCRAPER",

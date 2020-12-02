@@ -342,8 +342,8 @@
       ]
     },
     {
-      "category": "verse",
-      "verse_code": "3",
+      "category": "refrain",
+      "verse_code": "R",
       "lines": [
         {
           "chord_points": [
@@ -511,7 +511,7 @@
     },
     {
       "category": "verse",
-      "verse_code": "4",
+      "verse_code": "3",
       "lines": [
         {
           "chord_points": [

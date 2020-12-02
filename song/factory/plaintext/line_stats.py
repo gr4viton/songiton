@@ -164,7 +164,8 @@ class LineStore(BaseModel):
             line.verse_code = current_verse_code
 
             is_lead = "is_lead" if line.is_leading_line else ""
-            print(f"{line.verse_code} | {line.line} | {is_lead}")
+            cat = "chrd" if line.category is LineCategory.chord else "text"
+            print(f"{line.verse_code} | {cat} | {line.line} | {is_lead}")
 
     @property
     def lines_without_empty(self):
